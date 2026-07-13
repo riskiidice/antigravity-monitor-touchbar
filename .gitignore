@@ -16,3 +16,6 @@ dist/
 .vscode/
 .venv/
 venv/
+
+# AI instructions
+CLAUDE.md
