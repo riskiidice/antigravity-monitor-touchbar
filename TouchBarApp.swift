@@ -453,6 +453,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTouchBarDelegate {
         }
     }
 
+    func getQuotaColor(_ percent: Double) -> NSColor {
+        if percent >= 50.0 {
+            return NSColor(red: 0.2, green: 0.8, blue: 0.2, alpha: 1.0) // Green
+        } else if percent >= 30.0 {
+            return NSColor(red: 0.9, green: 0.8, blue: 0.1, alpha: 1.0) // Yellow
+        } else {
+            return NSColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0) // Red
+        }
+    }
+
     func updateUI(with data: QuotaData) {
         if data.status == "online" {
             cachedWeekly = data.gemini_weekly
@@ -468,13 +478,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTouchBarDelegate {
         } else {
             trayButton?.title = "$\(String(format: "%.2f", data.cost))"
         }
-        statusItem?.button?.title = "\(Int(displayWeekly))% | \(Int(displayFiveHour))%"
         
-        // 2. Update the progress bars (values are remaining %)
+        // 2. Color range percentages for Menu Bar (attributed title based on the lowest current limit)
+        let lowestPercent = min(displayWeekly, displayFiveHour)
+        let color = getQuotaColor(lowestPercent)
+        let titleText = " \(Int(displayWeekly))% | \(Int(displayFiveHour))%"
+        let attrTitle = NSMutableAttributedString(string: titleText)
+        attrTitle.addAttribute(.foregroundColor, value: color, range: NSRange(location: 0, length: titleText.count))
+        statusItem?.button?.attributedTitle = attrTitle
+        
+        // 3. Update the progress bars (values are remaining %)
         geminiWeeklyBar?.doubleValue = displayWeekly
         gemini5hBar?.doubleValue = displayFiveHour
         
-        // 3. Update Touch Bar labels
+        // 4. Update Touch Bar labels and their color indicators
         var gwText = "\(Int(displayWeekly))%"
         if data.status == "offline" {
             gwText += " (Offline)"
@@ -482,6 +499,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTouchBarDelegate {
             gwText += " (\(data.gemini_weekly_reset))"
         }
         geminiWeeklyLabel?.stringValue = gwText
+        geminiWeeklyLabel?.textColor = getQuotaColor(displayWeekly)
         
         var g5Text = "\(Int(displayFiveHour))%"
         if data.status == "offline" {
@@ -490,6 +508,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTouchBarDelegate {
             g5Text += " (\(data.gemini_5h_reset))"
         }
         gemini5hLabel?.stringValue = g5Text
+        gemini5hLabel?.textColor = getQuotaColor(displayFiveHour)
         
         logToFile("Updated UI elements. TouchBar Gemini Wk: \(gwText), 5h: \(g5Text)")
     }
