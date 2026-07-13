@@ -1,0 +1,18 @@
+# Compiled Binaries
+agy-touchbar-app
+
+# Python build and packaging
+*.egg-info/
+__pycache__/
+*.pyc
+build/
+dist/
+
+# OS metadata
+.DS_Store
+
+# IDE and virtual environments
+.idea/
+.vscode/
+.venv/
+venv/

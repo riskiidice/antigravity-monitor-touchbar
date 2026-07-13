@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agy-touchbar"
+version = "1.0.0"
+description = "A lightweight touchbar helper for Google Antigravity (agy)"
+readme = "README.md"
+authors = [
+    { name = "ampamp" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "rich>=13.0.0"
+]
+
+[project.scripts]
+agy-touchbar = "agy_touchbar.cli:main"
