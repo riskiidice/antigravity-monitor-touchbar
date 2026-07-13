@@ -1,88 +1,52 @@
-# Antigravity Touch Bar & Menu Bar Monitor (`agy-touchbar`)
+# Antigravity Touch Bar & Menu Bar Monitor
 
-A premium, lightweight utility that displays your live Google Antigravity TUI/CLI (`agy`) model quotas and cumulative token costs directly on your MacBook Touch Bar and macOS Menu Bar.
-
----
-
-## Features
-
-- **macOS Menu Bar Quota Indicator**: Displays the Antigravity logo next to your current remaining quota percentages (e.g., `Weekly% | 5-Hour%`).
-- **Expanded Touch Bar Modal**: Displays detailed progress bars and reset countdowns for Gemini and third-party models when the Touch Bar Control Strip item is tapped.
-- **Persistent Offline Cache**: Persists and displays your last known online quota percentages when the language server goes offline, avoiding flashing `100%`.
-- **All-Time Cost Tracker**: Dynamically reads all local SQLite conversation databases using read-only WAL mode to safely display your cumulative spend (matching the `/usage` command) without locking active databases.
-- **Resource Optimized**: Runs as a lightweight native accessory app with a **60-second** background update timer, while instantly updating quotas on-tap.
+Show your live Google Antigravity TUI/CLI (`agy`) model limits and API costs on your MacBook Touch Bar and macOS Menu Bar.
 
 ---
 
-## Directory Structure
+## Quick Start (Launch in 3 Steps)
 
-```
-agy-touchbar/
-├── README.md             # This instruction manual
-├── TouchBarApp.swift     # Native macOS App (Swift UI, Menu Bar, and Touch Bar controller)
-├── agy-touchbar-app      # Compiled native application executable
-├── agy_touchbar/         # Python helper library
-│   ├── cli.py            # CLI entry point
-│   ├── client.py         # Connect RPC client (queries RetrieveUserQuotaSummary)
-│   └── parser.py         # SQLite WAL cost parser (calculates all-time costs)
-├── setup.py              # Python package configuration
-└── pyproject.toml        # Build specifications
-```
-
----
-
-## Installation & Setup
-
-### 1. Build and Install the Python Backend
-The Python helper queries the local RPC endpoints and parses conversation databases.
-
+### 1. Install the Backend
+Run this in the project directory to install the Python helper library:
 ```bash
-# Install the package in editable mode
 pip install -e .
-
-# Verify the CLI command works and prints the live status
-agy-touchbar --json
 ```
 
-### 2. Compile the Swift Frontend
-Compile the Swift controller into a native macOS command-line application:
-
+### 2. Build the App
+Compile the Swift app into a native macOS executable:
 ```bash
 swiftc -o agy-touchbar-app TouchBarApp.swift
 ```
 
----
-
-## How to Launch and Manage the App
-
-### Launch in Background (Recommended)
-Launch the application as a detached background daemon:
+### 3. Launch the App
+Run the app in the background:
 ```bash
 nohup ./agy-touchbar-app >/dev/null 2>&1 &
 ```
 
-### Launch in Foreground (For Debugging & Logs)
-Run the application interactively in your terminal:
-```bash
-./agy-touchbar-app
-```
+---
 
-### Check Status Logs
-Tail the live application logs to view background queries, connection status, and Touch Bar updates:
-```bash
-tail -f /tmp/agy-touchbar.log
-```
+## How to Manage the App
 
-### Quit / Stop the Application
-To stop the daemon, select **Quit** from the Antigravity menu icon in the macOS Menu Bar, or run:
-```bash
-pkill -f agy-touchbar-app
-```
+- **View Live Logs**: Keep track of connection status, parsed costs, and background updates:
+  ```bash
+  tail -f /tmp/agy-touchbar.log
+  ```
+- **Stop the App**: Choose **Quit** from the Antigravity menu icon in your macOS Menu Bar, or run:
+  ```bash
+  pkill -f agy-touchbar-app
+  ```
 
 ---
 
-## Technical Details
+## What It Does
 
-- **Port Discovery**: Automatically scans running processes for `agy` or `antigravity-language-server`, mapping listening ports dynamically to route Connect RPC requests.
-- **Zero Lockups**: SQLite readers use `file:path.db?mode=ro` URI connections to bypass active WAL write locks.
-- **Togglable Modal**: The Touch Bar modal features a close (`✕`) button and re-registers the Control Strip button presence on dismissal via the private `DFRFoundation` framework category extensions.
+- **Menu Bar Indicator**: Shows the Antigravity logo next to your current Gemini Weekly and 5-Hour remaining percentages (e.g., `85% | 23%`).
+- **Expanded Touch Bar detail**: Tap the Control Strip button to open a custom Touch Bar view showing detailed remaining progress bars and reset countdowns.
+- **Offline Mode**: If the local server goes offline, it keeps showing your last known active percentages (caching them locally) instead of resetting to `100%`.
+- **API Cost Tracking**: Safely sums up all-time costs across your conversation databases using SQLite read-only mode so it never locks your active database.
+- **CPU Friendly**: Idle background checks poll once every 60 seconds to save battery, but it updates instantly whenever you expand the Touch Bar widget.
+- **Color Indicators**: Percentages change color based on usage levels:
+  - **Green** (>= 50% remaining)
+  - **Yellow** (30% to 50% remaining)
+  - **Red** (< 30% remaining)
