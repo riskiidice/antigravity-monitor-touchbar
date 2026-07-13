@@ -122,8 +122,11 @@ def calculate_cost(model_name: str, prompt: int, cached: int, output: int) -> fl
     cost = (prompt * input_rate) + (cached * cached_rate) + (output * output_rate)
     return cost
 
-def get_today_cost(cli_dir: str = "/Users/ampamp/.gemini/antigravity-cli") -> float:
+def get_today_cost(cli_dir: str = None) -> float:
     """Calculate the total cost of all API calls executed across all history (all time)."""
+    if cli_dir is None:
+        cli_dir = os.path.expanduser("~/.gemini/antigravity-cli")
+        
     db_pattern = os.path.join(cli_dir, "conversations", "*.db")
     db_files = glob.glob(db_pattern)
     
