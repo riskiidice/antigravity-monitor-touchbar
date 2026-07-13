@@ -70,3 +70,22 @@ Here is how the widgets update depending on whether your terminal `agy` session 
 ### Cost calculation does not match `/usage` in the CLI
 - **Why it happens**: A write lock on the active database might have skipped the current conversation.
 - **Fix**: The app automatically uses read-only URI connections to prevent WAL database locks, but you can force an instant refresh by tapping the Touch Bar button.
+
+---
+
+## Uninstalling the App
+
+If you ever need to clean up and remove the application, run these commands:
+
+1. **Stop the daemon**:
+   ```bash
+   pkill -f agy-touchbar-app
+   ```
+2. **Uninstall the Python package**:
+   ```bash
+   pip uninstall agy-touchbar -y
+   ```
+3. **Delete the compiled executable and temporary log file**:
+   ```bash
+   rm -f /Users/ampamp/Programs/DV_Space/agy-touchbar/agy-touchbar-app /tmp/agy-touchbar.log
+   ```
