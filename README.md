@@ -87,5 +87,5 @@ If you ever need to clean up and remove the application, run these commands:
    ```
 3. **Delete the compiled executable and temporary log file**:
    ```bash
-   rm -f /Users/ampamp/Programs/DV_Space/agy-touchbar/agy-touchbar-app /tmp/agy-touchbar.log
+   rm -f ./agy-touchbar-app /tmp/agy-touchbar.log
    ```
