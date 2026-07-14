@@ -118,8 +118,8 @@ def main():
     parser.add_argument("--mock", "-m", action="store_true", help="Use mock data for testing")
     parser.add_argument("--btt", action="store_true", help="Output BTT JSON format")
     parser.add_argument("--json", action="store_true", help="Output raw JSON data for TouchBarApp")
-    parser.add_argument("--warning", "-w", type=float, default=70.0, help="Warning threshold used % (default: 70)")
-    parser.add_argument("--critical", "-c", type=float, default=90.0, help="Critical threshold used % (default: 90)")
+    parser.add_argument("--warning", "-w", type=float, default=70.0, help="Warning threshold used percentage (default: 70)")
+    parser.add_argument("--critical", "-c", type=float, default=90.0, help="Critical threshold used percentage (default: 90)")
     parser.add_argument("--instructions", action="store_true", help="Show BetterTouchTool / MTMR setup instructions")
     
     args = parser.parse_args()

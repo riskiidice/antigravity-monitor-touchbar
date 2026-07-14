@@ -423,7 +423,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTouchBarDelegate {
         logToFile("Updating quotas...")
         let task = Process()
         task.launchPath = "/bin/zsh"
-        task.arguments = ["-c", "/Library/Frameworks/Python.framework/Versions/3.11/bin/agy-touchbar --json"]
+        task.arguments = ["-c", "/usr/local/bin/agy-touchbar --json"]
         
         let pipe = Pipe()
         task.standardOutput = pipe

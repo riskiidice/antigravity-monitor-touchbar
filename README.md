@@ -11,9 +11,9 @@ Track your live Google Antigravity TUI/CLI (`agy`) model quotas and cumulative t
 ## Quick Start (3 Steps)
 
 ### 1. Install the Backend
-Run this in the project directory to install the Python helper:
+Run this in the project directory to install the Python helper (using `--break-system-packages` to bypass PEP 668 restrictions on macOS):
 ```bash
-pip install -e .
+python3 -m pip install -e . --break-system-packages
 ```
 
 ### 2. Build the App
@@ -83,7 +83,7 @@ If you ever need to clean up and remove the application, run these commands:
    ```
 2. **Uninstall the Python package**:
    ```bash
-   pip uninstall agy-touchbar -y
+   python3 -m pip uninstall agy-touchbar -y --break-system-packages
    ```
 3. **Delete the compiled executable and temporary log file**:
    ```bash
